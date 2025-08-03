@@ -35,13 +35,10 @@ function App() {
   const renderContent = () => {
     if (activeTab === "Home") {
       return (
-        <div className="bg-white p-6 rounded-xl shadow-md space-y-6">
+        <div className="bg-white p-6 rounded-xl shadow-md space-y-6" id="home-tab">
           <h2 className="text-2xl font-bold">Welcome, {username || "User"}!</h2>
-          <p className="text-gray-600">
-            Here's a quick summary of your dashboard and settings:
-          </p>
 
-          <div className="bg-gray-50 p-4 rounded-xl border">
+          <div className="bg-gray-50 p-4 rounded-xl border" id="radio-section">
             <h3 className="font-semibold mb-2">Preferred Testing Environment:</h3>
             <div className="flex gap-4">
               {["QA", "Staging", "Production"].map((envOption) => (
@@ -50,6 +47,7 @@ function App() {
                     type="radio"
                     name="env"
                     value={envOption}
+                    id={`radio-${envOption.toLowerCase()}`}
                     checked={env === envOption}
                     onChange={() => setEnv(envOption)}
                   />
@@ -59,12 +57,13 @@ function App() {
             </div>
           </div>
 
-          <div className="bg-gray-50 p-4 rounded-xl border">
+          <div className="bg-gray-50 p-4 rounded-xl border" id="checkbox-section">
             <h3 className="font-semibold mb-2">Preferences:</h3>
             <div className="space-y-2">
               <label className="flex items-center space-x-2">
                 <input
                   type="checkbox"
+                  id="checkbox-notifications"
                   checked={preferences.notifications}
                   onChange={() => togglePreference("notifications")}
                 />
@@ -73,6 +72,7 @@ function App() {
               <label className="flex items-center space-x-2">
                 <input
                   type="checkbox"
+                  id="checkbox-darkmode"
                   checked={preferences.darkMode}
                   onChange={() => togglePreference("darkMode")}
                 />
@@ -86,8 +86,8 @@ function App() {
 
     if (activeTab === "Tools") {
       return (
-        <div className="overflow-x-auto mt-4">
-          <table className="w-full bg-white rounded-xl shadow-md">
+        <div className="overflow-x-auto mt-4" id="tools-tab">
+          <table className="w-full bg-white rounded-xl shadow-md" id="tools-table" data-testid="tools-table">
             <thead>
               <tr className="bg-blue-100 text-left">
                 <th className="py-3 px-4">Automation Tool</th>
@@ -119,20 +119,20 @@ function App() {
 
     if (activeTab === "AI") {
       return (
-        <div className="bg-white p-6 rounded-xl shadow-md">
+        <div className="bg-white p-6 rounded-xl shadow-md" id="ai-tab" data-testid="ai-section">
           <h2 className="text-xl font-bold mb-4">AI Tools for Testing</h2>
           <ul className="space-y-3 text-gray-700 list-disc pl-5">
             <li>
-              <strong>Testim.io</strong> – Uses machine learning to create and maintain stable UI tests.
+              <strong>Testim.io</strong> – Machine learning for stable UI tests.
             </li>
             <li>
-              <strong>Functionize</strong> – AI-powered test creation with natural language processing.
+              <strong>Functionize</strong> – AI-powered test creation with NLP.
             </li>
             <li>
-              <strong>Applitools</strong> – Visual AI for automated visual regression testing.
+              <strong>Applitools</strong> – Visual regression using AI.
             </li>
             <li>
-              <strong>mabl</strong> – Intelligent, self-healing test flows with real-time analytics.
+              <strong>mabl</strong> – Self-healing test flows with analytics.
             </li>
           </ul>
         </div>
@@ -142,28 +142,37 @@ function App() {
 
   if (!isLoggedIn) {
     return (
-      <div className="flex h-screen items-center justify-center bg-gradient-to-br from-blue-200 to-indigo-200">
-        <form onSubmit={handleLogin} className="bg-white p-6 rounded-2xl shadow-xl w-80">
-          <h2 className="text-2xl font-bold mb-4 text-center text-blue-600">Login</h2>
+      <div className="flex h-screen items-center justify-center bg-gradient-to-br from-blue-200 to-indigo-300">
+        <form onSubmit={handleLogin} className="bg-white p-8 rounded-2xl shadow-2xl w-96" id="login-form">
+          <h2 className="text-3xl font-bold mb-6 text-center text-blue-600" id="login-title">Login</h2>
+
           <input
             type="text"
             placeholder="Username"
-            className="w-full p-2 mb-4 border rounded-xl"
+            className="w-full p-3 mb-4 border border-gray-300 rounded-xl"
+            id="username"
+            data-testid="username-input"
             value={username}
             onChange={(e) => setUsername(e.target.value)}
             required
           />
+
           <input
             type="password"
             placeholder="Password"
-            className="w-full p-2 mb-4 border rounded-xl"
+            className="w-full p-3 mb-4 border border-gray-300 rounded-xl"
+            id="password"
+            data-testid="password-input"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             required
           />
+
           <button
             type="submit"
-            className="w-full bg-blue-600 text-white py-2 rounded-xl hover:bg-blue-700"
+            className="w-full bg-blue-600 text-white py-3 rounded-xl hover:bg-blue-700 transition"
+            id="login-button"
+            data-testid="login-button"
           >
             Login
           </button>
@@ -180,6 +189,8 @@ function App() {
             <button
               key={tab}
               onClick={() => setActiveTab(tab)}
+              id={`tab-${tab.toLowerCase()}`}
+              data-testid={`tab-${tab.toLowerCase()}`}
               className={`px-4 py-2 rounded-xl text-white font-medium transition-all ${
                 activeTab === tab ? "bg-blue-600" : "bg-blue-400 hover:bg-blue-500"
               }`}
@@ -190,6 +201,8 @@ function App() {
         </div>
         <button
           onClick={handleLogout}
+          id="logout-button"
+          data-testid="logout-button"
           className="bg-red-500 text-white px-4 py-2 rounded-xl hover:bg-red-600"
         >
           Logout
